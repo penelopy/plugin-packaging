@@ -203,15 +203,11 @@ export class PackageVersionCreateCommand extends SfCommand<PackageVersionCommand
       async (data: PackageVersionCreateReportProgress) => {
         let status: string;
 
-        // if (flags['async-validation'] && data.Status === Package2VersionStatus.performingValidations) {
-        //   status = messages.getMessage('packageVersionCreatePerformingValidations');
-        //   if (flags.verbose) {
-        //     this.log(status);
-        //   } else {
-        //     this.spinner.status = status;
-        //   }
-        // } else
-        if (data.Status !== Package2VersionStatus.success && data.Status !== Package2VersionStatus.error) {
+        if (
+          data.Status !== Package2VersionStatus.success &&
+          data.Status !== Package2VersionStatus.error &&
+          data.Status !== Package2VersionStatus.performingValidations
+        ) {
           status = messages.getMessage('packageVersionCreateWaitingStatus', [
             data.remainingWaitTime.minutes,
             data.Status,
@@ -269,6 +265,18 @@ export class PackageVersionCreateCommand extends SfCommand<PackageVersionCommand
         throw messages.createError('multipleErrors', [
           result.Error?.map((e: string, i) => `${os.EOL}(${i + 1}) ${e}`).join(''),
         ]);
+      case Package2VersionStatus.performingValidations:
+        this.log(messages.getMessage('packageVersionCreatePerformingValidations'));
+        this.log(
+          messages.getMessage(Package2VersionStatus.success, [
+            result.Id,
+            result.SubscriberPackageVersionId,
+            INSTALL_URL_BASE.toString(),
+            result.SubscriberPackageVersionId,
+            this.config.bin,
+          ])
+        );
+        break;
       case Package2VersionStatus.success:
         this.log(
           messages.getMessage(result.Status, [

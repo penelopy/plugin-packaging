@@ -213,8 +213,9 @@ Version create.
 
 # packageVersionCreatePerformingValidations
 
-We're finishing up validations on our end. In the meantime feel free
-to use this package version to perform validations yourself.
+The validations for this package version are in progress, but you can now begin testing this package version.
+To determine whether all package validations completed successfully, run sf package version create report and review the
+Async Validation Status. Async validated package versions can be promoted only if all validations completed successfully.
 
 # packageVersionCreateFinalStatus
 
