@@ -125,9 +125,6 @@
         "ValidationSkipped": {
           "type": "boolean"
         },
-        "ValidatedAsync": {
-          "type": "boolean"
-        },
         "Name": {
           "type": "string"
         },
